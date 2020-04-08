@@ -1,0 +1,78 @@
+#include<stdio.h>
+
+int Total=0,t1=0,t2=0,t3=0;
+
+int n,i,at[30],bt[30],pr[30],k=0;
+
+int arrival_time2[30],priority2[30],process2[30];
+int burst_time2[30];
+
+int pos,q,temp1,sum=0,waiting_time2[30],turnaround_time2[30];
+float avg_waiting_time2=0.0,avg_turnaround_time2=0.0;
+
+void priority()
+{
+	for(i=0;i<k;i++)
+    {
+        pos=i;
+        for(q=i+1;q<k;q++)
+        {
+            if(priority2[q]<priority2[pos])
+            {
+                pos=q;
+            }
+        }
+        temp1=priority2[i];
+        priority2[i]=priority2[pos];
+        priority2[pos]=temp1; 
+        
+        temp1=burst_time2[i];
+        burst_time2[i]=burst_time2[pos];
+        burst_time2[pos]=temp1;
+        
+        temp1=process2[i];
+        process2[i]=process2[pos];
+        process2[pos]=temp1;
+    }
+    waiting_time2[0]=0;
+    for(i=1;i<k;i++)
+    {
+        waiting_time2[i]=0;
+        for(q=0;q<i;q++)
+        {
+            waiting_time2[i]=waiting_time2[i]+burst_time2[j];
+        }
+        sum=sum+waiting_time2[i];
+    }
+    avg_waiting_time2=sum/k;
+    sum=0;
+    printf("\nProcess ID\t\tBurst Time\t Waiting Time\t Turnaround Time\n");
+    for(i=0;i<k;i++)
+    {
+    	turnaround_time2[i]=burst_time2[i]+waiting_time2[i];
+        sum=sum+turnaround_time2[i];
+        printf("\nProcess[%d]\t\t%d\t\t %d\t\t %d\n",process2[i],burst_time2[i],waiting_time2[i],turnaround_time2[i]);
+    }
+    avg_turnaround_time2=sum/k;
+    printf("\nAverage Waiting Time:\t%f",avg_waiting_time2);
+    printf("\nAverage Turnaround Time:\t%f\n",avg_turnaround_time2);
+    
+    for(i=0;i<k;i++)
+    {
+    	while(burst_time2[i]!=0)
+    	{
+    		if(burst_time2[i]>10)
+    		{
+				printf("\nProcess[%d] of Queue2 is running for 10 units",i+1);
+				burst_time2[i]=burst_time2[i]-10;
+			}
+			else if(burst_time2[i]<=10)
+			{
+				printf("\nProcess[%d] of Queue2 is running for %d units",i+1,burst_time2[i]);
+				burst_time2[i]=0;
+			}
+		}
+	}
+
+}
+
