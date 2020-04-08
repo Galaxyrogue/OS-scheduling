@@ -1,0 +1,68 @@
+#include<stdio.h>
+
+int Total=0,t1=0,t2=0,t3=0;
+
+int n,i,at[30],bt[30],pr[30],j=0;//substitutes for all the times needed and parameter for lenght of each queue
+
+int arrival_time1[30],process2[30];
+int burst_time1[30];
+
+int total,x,temp[30],counter=0;
+float avg_waiting_time1=0.0,avg_turnaround_time1=0.0;
+
+int p,waiting_time3[30],turnaround_time3[30];
+float avg_waiting_time3=0.0,avg_turnaround_time3=0.0;
+
+int pos,q,temp1,sum=0,waiting_time2[30],turnaround_time2[30];
+float avg_waiting_time2=0.0,avg_turnaround_time2=0.0;
+
+void round_robin()
+{
+	printf("Time Quantum for Queue1 is 4\n");
+	for(i=0;i<j;i++)
+	{
+		temp[i]=burst_time1[i];
+	} 
+	printf("\nProcess ID\tBurst Time\t Turnaround Time\t Waiting Time\n");
+	x=j;
+    for(i=0,total=0;x!=0;) 
+    { 
+    	if(temp[i]<=4&&temp[i]>0) 
+        {
+			printf("\nProcess[%d] of Queue1 is running for %d units",i+1,temp[i]); 
+            total=total+temp[i]; 
+            temp[i]=0; 
+            counter=1; 
+        } 
+        else if(temp[i]>0) 
+        {
+			printf("\nProcess[%d] of Queue1 is running for 4 units",i+1); 
+            temp[i]=temp[i]-4; 
+            total=total+4; 
+        } 
+        if(temp[i]==0&&counter==1) 
+        { 
+            x--; 
+            printf("\nProcess[%d]\t\t%d\t\t %d\t\t %d\n",i+1,burst_time1[i],total-arrival_time1[i],total-arrival_time1[i]-burst_time1[i]);
+            avg_waiting_time1=avg_waiting_time1+total-arrival_time1[i]-burst_time1[i]; 
+            avg_turnaround_time1=avg_turnaround_time1+total-arrival_time1[i]; 
+            counter = 0; 
+        } 
+        if(i==j-1) 
+        {
+            i=0; 
+        }
+        else if(arrival_time1[i+1]<=total) 
+        {
+            i++;
+        }
+        else 
+        {
+            i=0;
+        }
+    } 
+    avg_waiting_time1=avg_waiting_time1/j;
+    avg_turnaround_time1=avg_turnaround_time1/j;
+    printf("\nAverage Waiting Time:%f",avg_waiting_time1); 
+    printf("\nAverage Turnaround Time:%f\n",avg_turnaround_time1); 
+}
